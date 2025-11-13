@@ -1,7 +1,19 @@
+import withPWA from "next-pwa";
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
+  webpack: (config) => config,
+  turbopack: {
+    // ...
+  },
 };
 
-export default nextConfig;
+export default withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+  disable: !isProd,
+})(nextConfig as any); // 👈 Fix: bypass type conflict
